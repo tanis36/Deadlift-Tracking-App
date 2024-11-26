@@ -54,7 +54,7 @@ lmain.place(x=0, y=0)
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
-pose = mp.pose.Pose(min_tracking_confidence=0.5, min_detection_confidence=0.5)
+pose = mp_pose.Pose(min_tracking_confidence=0.5, min_detection_confidence=0.5)
 
 with open("deadlift.pkl", "rb") as f:
     model = pickle.load(f)
@@ -65,4 +65,30 @@ counter = 0
 bodylang_prob = np.array([0,0])
 bodylang_class = ""
 
+def detect():
+    global current_stage
+    global counter
+    global bodylang_prob
+    global bodylang_class
+
+    ret, frame = cap.read()
+    image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    results = pose.process(image)
+    mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                              mp_drawing.DrawingSpec(color=(0,0,255), thickness=2, circle_radius=2),
+                              mp_drawing.DrawingSpec(color=(0,255,0), thickness=2, circle_radius=2))
+    
+    try:
+        pass
+    except Exception as e:
+        pass
+
+    img = image[:, :460, :]
+    imgarr = Image.fromarray(img)
+    imgtk = ImageTk.PhotoImage(imgarr)
+    lmain.imgtk = imgtk
+    lmain.configure(image=imgtk)
+    lmain.after(10, detect)
+
+detect()
 window.mainloop()
