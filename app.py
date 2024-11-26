@@ -47,4 +47,9 @@ def reset_counter():
 button = ck.CTkButton(window, text="RESET", command=reset_counter, height=40, width=120, font=("Arial", 20), text_color="white", fg_color="blue")
 button.place(x=10, y=600)
 
+frame = tk.Frame(height=480, width=480)
+frame.place(x=10, y=90)
+lmain = tk.Label(frame)
+lmain.place(x=0, y=0)
+
 window.mainloop()
