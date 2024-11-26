@@ -79,7 +79,17 @@ def detect():
                               mp_drawing.DrawingSpec(color=(0,255,0), thickness=2, circle_radius=2))
     
     try:
-        pass
+        row = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten().tolist()
+        X = pd.DataFrame([row], columns = landmarks)
+        bodylang_prob = model.predict_proba(X)[0]
+        bodylang_class = model.predict(X)[0]
+
+        if bodylang_class == "down" and bodylang_prob[bodylang_prob.argmax()] > 0.7:
+            current_stage = "down"
+        elif current_stage == "down" and bodylang_class == "up" and bodylang_prob[bodylang_prob.argmax()] > 0.7:
+            current_stage = "up"
+            counter += 1
+
     except Exception as e:
         pass
 
@@ -89,6 +99,10 @@ def detect():
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
     lmain.after(10, detect)
+
+    counter_box.configure(text=counter)
+    prob_box.configure(text=bodylang_prob[bodylang_prob.argmax()])
+    class_box.configure(text=current_stage)
 
 detect()
 window.mainloop()
