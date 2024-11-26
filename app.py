@@ -52,4 +52,17 @@ frame.place(x=10, y=90)
 lmain = tk.Label(frame)
 lmain.place(x=0, y=0)
 
+mp_drawing = mp.solutions.drawing_utils
+mp_pose = mp.solutions.pose
+pose = mp.pose.Pose(min_tracking_confidence=0.5, min_detection_confidence=0.5)
+
+with open("deadlift.pkl", "rb") as f:
+    model = pickle.load(f)
+
+cap = cv2.VideoCapture(0)
+current_stage = ""
+counter = 0
+bodylang_prob = np.array([0,0])
+bodylang_class = ""
+
 window.mainloop()
