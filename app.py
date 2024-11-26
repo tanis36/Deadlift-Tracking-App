@@ -40,4 +40,11 @@ prob_box = ck.CTkLabel(window, height=40, width=120, font=("Arial", 20), text_co
 prob_box.place(x=350, y=41)
 prob_box.configure(text='0')
 
+def reset_counter():
+    global counter
+    counter = 0
+
+button = ck.CTkButton(window, text="RESET", command=reset_counter, height=40, width=120, font=("Arial", 20), text_color="white", fg_color="blue")
+button.place(x=10, y=600)
+
 window.mainloop()
